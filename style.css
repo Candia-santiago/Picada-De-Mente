@@ -1,0 +1,75 @@
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* Centra el contenido verticalmente */
+    height: 100vh;
+    background-color: #e0e0e0;
+    font-family: Arial, sans-serif;
+    text-align: center; /* Centra el texto del título */
+}
+
+h1 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+}
+
+.contenedor {
+    width: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.pista {
+    width: 100%;
+    height: 200px;
+    background-color: #444;
+    position: relative;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.linea-media {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background-color: yellow;
+    transform: translateY(-50%);
+    z-index: 1;
+}
+
+.carril {
+    position: relative;
+    width: 100%;
+    height: 50%;
+    box-sizing: border-box;
+}
+
+.carril:nth-child(1) {
+    border-top: 5px dashed #fff; /* Línea separadora para el carril superior */
+}
+
+.carril:nth-child(2) {
+    border-bottom: 5px dashed #fff; /* Línea separadora para el carril inferior */
+}
+
+.auto {
+    position: absolute;
+    left: 10px; /* Ajusta la posición horizontal del auto */
+    bottom: 10px; /* Ajusta la posición vertical del auto */
+    max-width: 60px; /* Ajusta el tamaño máximo del auto */
+    max-height: 100%;
+    object-fit: contain;
+}
+button{
+    background-color: yellow;
+    color: black;
+    border-radius: 5px ;
+}
