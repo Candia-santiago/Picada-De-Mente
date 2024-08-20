@@ -4,17 +4,18 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center; /* Centra el contenido verticalmente */
+    justify-content: center; 
     height: 100vh;
     background-color: #e0e0e0;
-    font-family: Arial, sans-serif;
-    text-align: center; /* Centra el texto del título */
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    text-align: center; 
 }
 
 h1 {
     margin-bottom: 20px;
     font-size: 24px;
     color: #333;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif ;
 }
 
 .contenedor {
@@ -38,7 +39,7 @@ h1 {
     position: absolute;
     top: 50%;
     left: 0;
-    width: 100%;
+    width: 91%;
     height: 5px;
     background-color: yellow;
     transform: translateY(-50%);
@@ -53,18 +54,18 @@ h1 {
 }
 
 .carril:nth-child(1) {
-    border-top: 5px dashed #fff; /* Línea separadora para el carril superior */
+    border-top: 5px dashed #fff; 
 }
 
 .carril:nth-child(2) {
-    border-bottom: 5px dashed #fff; /* Línea separadora para el carril inferior */
+    border-bottom: 5px dashed #fff; 
 }
 
 .auto {
     position: absolute;
-    left: 10px; /* Ajusta la posición horizontal del auto */
-    bottom: 10px; /* Ajusta la posición vertical del auto */
-    max-width: 60px; /* Ajusta el tamaño máximo del auto */
+    left: 10px; 
+    bottom: 10px;
+    max-width: 60px; 
     max-height: 100%;
     object-fit: contain;
 }
@@ -76,4 +77,19 @@ button{
 
 .input{
     text-align: center;
+}
+
+.preguntas{
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif
+}
+
+#meta{
+    width: 100px;
+    height: 200px ;
+    position: absolute; /* Para colocar la imagen en la pista */
+    bottom: 0; /* Coloca la imagen al final de la pista */
+    margin-left: 450px;
+    border-radius: 5px;
+    z-index: 0;
+    object-fit: cover; /* Asegura que la imagen cubra el área sin distorsionarse */
 }

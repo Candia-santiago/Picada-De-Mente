@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Carrera de Mente</h1>
+    <h1>Picada de Mente</h1>
     <div class="contenedor">
         <div class="pista">
             <div class="linea-media" ></div>
@@ -17,8 +17,15 @@
             <div class="carril">
                 <img src="autoAzul.png" alt="autoAzul" class="auto">
             </div>
+            <div class="meta"><img id="meta" src="meta.jpg" alt="fotoDeMeta"></div>
         </div>
     </div><br>
+
+    <div class="preguntas">
+        <h2>Pregunta</h2>
+        <div id="contenedorPreguntas"></div>
+    </div>
+
     <div>
         <h2>Ingrese su respuesta</h2>
         <form action="/ruta-del-servidor" method="post">
@@ -26,5 +33,7 @@
             <button type="submit">Enviar</button>
     </div>
 
+        <script src="preguntas.js"></script>
+        <script src="script.js"></script>
 </body>
 </html>
