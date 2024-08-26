@@ -10,30 +10,30 @@
     <h1>Picada de Mente</h1>
     <div class="contenedor">
         <div class="pista">
-            <div class="linea-media" ></div>
+            <div class="linea-media"></div>
             <div class="carril">
                 <img src="autoRojo.png" alt="autoRojo" class="auto">
-            </div>       
+            </div>
             <div class="carril">
                 <img src="autoAzul.png" alt="autoAzul" class="auto">
             </div>
             <div class="meta"><img id="meta" src="meta.jpg" alt="fotoDeMeta"></div>
         </div>
-    </div><br>
-
+    </div>
+    <br>
     <div class="preguntas">
         <h2>Pregunta</h2>
         <div id="contenedorPreguntas"></div>
     </div>
-
     <div>
         <h2>Ingrese su respuesta</h2>
-        <form action="/ruta-del-servidor" method="post">
-            <input class="input" type="text" name="respuesta" placeholder="Respuesta">
-            <button type="submit">Enviar</button>
+        <form id="formularioRespuesta">
+            <input id="respuestaUsuario" class="input" type="text" name="respuesta" placeholder="Respuesta">
+            <button id="enviarRespuesta" type="submit">Enviar</button>
+        </form>
+        <div id="mensajeResultado"></div>
     </div>
-
-        <script src="preguntas.js"></script>
-        <script src="script.js"></script>
+    <script src="preguntas.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>

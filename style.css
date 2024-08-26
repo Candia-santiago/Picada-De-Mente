@@ -93,3 +93,8 @@ button{
     z-index: 0;
     object-fit: cover; /* Asegura que la imagen cubra el área sin distorsionarse */
 }
+
+.auto{
+    width: 500px;;
+    height: auto;
+}
