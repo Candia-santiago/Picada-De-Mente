@@ -91,7 +91,7 @@ const preguntas = [
       "Han",
       "Tang"
     ],
-    respuesta: "La dinastía Qing"
+    respuesta: "Qing"
   },
   {
     pregunta: "¿Qué imperio se conoce por la construcción de Machu Picchu?",
@@ -101,7 +101,7 @@ const preguntas = [
       "Maya",
       "Olmeca"
     ],
-    respuesta: "El Imperio Inca"
+    respuesta: "Inca"
   },
 
   // Deportes
@@ -305,7 +305,7 @@ const preguntas = [
       "Mar Muerto",
       "Mar Caribe"
     ],
-    respuesta: "El Mar Muerto"
+    respuesta: "Mar Muerto"
   },
 
   // Preguntas adicionales

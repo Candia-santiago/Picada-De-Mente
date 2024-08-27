@@ -5,35 +5,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pista de Carreras</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <h1>Picada de Mente</h1>
+    <h1 class="text-center my-4">Picada de Mente</h1>
     <div class="contenedor">
         <div class="pista">
             <div class="linea-media"></div>
             <div class="carril">
-                <img src="autoRojo.png" alt="autoRojo" class="auto">
+                <img src="img/autoRojo.png" alt="autoRojo" class="auto">
             </div>
             <div class="carril">
-                <img src="autoAzul.png" alt="autoAzul" class="auto">
+                <img src="img/autoAzul.png" alt="autoAzul" class="auto">
             </div>
-            <div class="meta"><img id="meta" src="meta.jpg" alt="fotoDeMeta"></div>
+            <div class="meta"><img id="meta" src="img/meta.jpg" alt="fotoDeMeta"></div>
         </div>
     </div>
     <br>
-    <div class="preguntas">
+    <div class="preguntas-container">
         <h2>Pregunta</h2>
-        <div id="contenedorPreguntas"></div>
+        <div id="contenedorPreguntas" class="mb-4"></div>
     </div>
-    <div>
-        <h2>Ingrese su respuesta</h2>
+    <div class="container">
+        <h2>Seleccione su respuesta</h2>
         <form id="formularioRespuesta">
-            <input id="respuestaUsuario" class="input" type="text" name="respuesta" placeholder="Respuesta">
-            <button id="enviarRespuesta" type="submit">Enviar</button>
+            <div id="opciones" class="form-group"></div>
+            <button id="enviarRespuesta" type="submit" class="btn btn-warning">Enviar</button>
         </form>
-        <div id="mensajeResultado"></div>
+        <div id="mensajeResultado" class="mt-3"></div>
     </div>
     <script src="preguntas.js"></script>
     <script src="script.js"></script>
+ 
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
+

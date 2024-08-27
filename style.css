@@ -4,18 +4,18 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center; 
+    justify-content: center;
     height: 100vh;
     background-color: #e0e0e0;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    text-align: center; 
+    text-align: center;
 }
 
 h1 {
     margin-bottom: 20px;
     font-size: 24px;
     color: #333;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif ;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
 .contenedor {
@@ -33,13 +33,14 @@ h1 {
     border-radius: 10px;
     display: flex;
     flex-direction: column;
+    justify-content: space-between; /* Asegura que los carriles se distribuyan correctamente */
 }
 
 .linea-media {
     position: absolute;
     top: 50%;
     left: 0;
-    width: 91%;
+    width: 91%; /* Ajustado para que ocupe todo el ancho de la pista */
     height: 5px;
     background-color: yellow;
     transform: translateY(-50%);
@@ -54,47 +55,62 @@ h1 {
 }
 
 .carril:nth-child(1) {
-    border-top: 5px dashed #fff; 
+    border-top: 5px dashed #fff;
 }
 
 .carril:nth-child(2) {
-    border-bottom: 5px dashed #fff; 
+    border-bottom: 5px dashed #fff;
 }
 
 .auto {
     position: absolute;
-    left: 10px; 
+    left: 10px;
     bottom: 10px;
-    max-width: 60px; 
+    max-width: 60px;
     max-height: 100%;
     object-fit: contain;
 }
-button{
+
+button {
     background-color: yellow;
     color: black;
-    border-radius: 5px ;
+    border-radius: 5px;
+    padding: 10px 20px; /* Agrega relleno para hacer el botón más grande */
+    font-size: 16px; /* Aumenta el tamaño de la fuente para mayor legibilidad */
+    margin-top: 20px; /* Espacio entre el botón y el resto del contenido */
+    cursor: pointer; /* Cambia el cursor al pasar por encima */
 }
 
-.input{
+.input {
     text-align: center;
 }
 
-.preguntas{
-    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif
+.preguntas {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    margin-bottom: 20px;
 }
 
-#meta{
+#meta {
     width: 100px;
-    height: 200px ;
-    position: absolute; /* Para colocar la imagen en la pista */
-    bottom: 0; /* Coloca la imagen al final de la pista */
-    margin-left: 450px;
+    height: 200px;
+    position: absolute;
+    right: 0; /* Coloca la meta al final del carril */
+    bottom: 0;
     border-radius: 5px;
     z-index: 0;
     object-fit: cover; /* Asegura que la imagen cubra el área sin distorsionarse */
 }
 
-.auto{
-    width: 500px;;
+.auto {
+    width: 60px; /* Tamaño adecuado para los autos */
     height: auto;
+}
+.preguntas-container{
+    justify-content: center;
+    text-align: center;
+}
+
+.container{
+    justify-content: center;
+    text-align: center;
 }
