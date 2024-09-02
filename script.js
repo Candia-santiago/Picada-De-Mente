@@ -1,3 +1,5 @@
+// script.js
+
 const preguntaContainer = document.getElementById('contenedorPreguntas');
 const opcionesContainer = document.getElementById('opciones');
 const enviarBtn = document.getElementById('enviarRespuesta');
@@ -5,21 +7,24 @@ const mensajeResultado = document.getElementById('mensajeResultado');
 const formulario = document.getElementById('formularioRespuesta');
 
 let preguntaSeleccionada;
+let turno = 0; // 0: jugador 1, 1: jugador 2
+let respuestasCorrectas = [0, 0]; // Respuestas correctas de cada jugador
+const avancePorRespuesta = 12; // 7 respuestas correctas para avanzar 84%, dejando margen para ajustes
 
-// Seleccionar y mostrar una pregunta aleatoria
-function mostrarPreguntaAleatoria() {
+function mostrarPregunta() {
     if (preguntas.length === 0) {
         mensajeResultado.textContent = "¡Felicitaciones! Has respondido todas las preguntas.";
         mensajeResultado.style.color = "blue";
         return;
     }
-    const indiceAleatorio = Math.floor(Math.random() * preguntas.length);
-    preguntaSeleccionada = preguntas.splice(indiceAleatorio, 1)[0];
-    preguntaContainer.textContent = preguntaSeleccionada.pregunta;
+    if (!preguntaSeleccionada) {
+        const indiceAleatorio = Math.floor(Math.random() * preguntas.length);
+        preguntaSeleccionada = preguntas[indiceAleatorio];
+    }
+    preguntaContainer.textContent = `Jugador ${turno + 1}, ${preguntaSeleccionada.pregunta}`;
     mostrarOpciones(preguntaSeleccionada.opciones);
 }
 
-// Mostrar opciones de respuesta
 function mostrarOpciones(opciones) {
     opcionesContainer.innerHTML = ''; // Limpiar opciones anteriores
     opciones.forEach((opcion, index) => {
@@ -33,7 +38,6 @@ function mostrarOpciones(opciones) {
     });
 }
 
-// Verificar la respuesta del usuario
 function verificarRespuesta(event) {
     event.preventDefault();
     const respuestaUsuario = document.querySelector('input[name="opcion"]:checked');
@@ -47,56 +51,51 @@ function verificarRespuesta(event) {
     if (respuestaUsuario.value === preguntaSeleccionada.respuesta) {
         mensajeResultado.textContent = "¡Respuesta correcta!";
         mensajeResultado.style.color = "green";
-        avanzarAuto();
-        mostrarPreguntaAleatoria();
+        respuestasCorrectas[turno]++;
+        avanzarAuto(turno);
+        if (respuestasCorrectas[turno] >= 7) {
+            alert(`¡El jugador ${turno + 1} ha ganado!`);
+            resetGame();
+        } else {
+            preguntaSeleccionada = null; // Nueva pregunta para el siguiente turno
+            turno = 1 - turno; // Cambiar de turno
+            mostrarPregunta();
+        }
     } else {
         mensajeResultado.textContent = "Respuesta incorrecta. Intenta de nuevo.";
         mensajeResultado.style.color = "red";
-        mostrarPreguntaAleatoria();
+        turno = 1 - turno; // Cambiar de turno
+        mostrarPregunta();
     }
 }
 
-// Lógica para avanzar el auto
-function avanzarAuto() {
-    const autoRojo = document.querySelector('.carril img[alt="autoRojo"]');
-    const autoAzul = document.querySelector('.carril img[alt="autoAzul"]');
-    
-    let currentPosRojo = autoRojo.style.marginLeft ? parseInt(autoRojo.style.marginLeft) : 0;
-    let currentPosAzul = autoAzul.style.marginLeft ? parseInt(autoAzul.style.marginLeft) : 0;
-
-    currentPosRojo += Math.random() * 10; // Avanza una distancia aleatoria
-    currentPosAzul += Math.random() * 10;
-
-    autoRojo.style.marginLeft = `${currentPosRojo}%`;
-    autoAzul.style.marginLeft = `${currentPosAzul}%`;
-
-    verificarMeta(autoRojo, autoAzul);
+function avanzarAuto(turno) {
+    const auto = document.querySelector(`.carril img[alt="auto${turno === 0 ? 'Rojo' : 'Azul'}"]`);
+    let currentPos = auto.style.marginLeft ? parseInt(auto.style.marginLeft) : 0;
+    currentPos += avancePorRespuesta;
+    auto.style.marginLeft = `${currentPos}%`;
+    verificarMeta(auto, turno);
 }
 
-// Verificar si algún auto ha llegado a la meta
-function verificarMeta(autoRojo, autoAzul) {
-    if (parseInt(autoRojo.style.marginLeft) >= 90) {
-        alert("¡El auto rojo ha ganado!");
+function verificarMeta(auto, turno) {
+    if (parseInt(auto.style.marginLeft) >= 90) {
+        autoRojo.style.marginLeft = '95%';
+        alert(`¡El auto ${turno === 0 ? 'rojo' : 'azul'} ha ganado!`);
         resetGame();
-    } else if (parseInt(autoAzul.style.marginLeft) >= 90) {
-        alert("¡El auto azul ha ganado!");
-        resetGame();
-    }
+        }
 }
 
-// Resetear el juego
 function resetGame() {
-    const autoRojo = document.querySelector('.carril img[alt="autoRojo"]');
-    const autoAzul = document.querySelector('.carril img[alt="autoAzul"]');
-    
-    autoRojo.style.marginLeft = '0%';
-    autoAzul.style.marginLeft = '0%';
+    const autos = document.querySelectorAll('.carril img');
+    autos.forEach(auto => auto.style.marginLeft = '0%');
+    respuestasCorrectas = [0, 0];
     preguntas = [...preguntasOriginales]; // Restaura las preguntas originales
-    mostrarPreguntaAleatoria();
+    preguntaSeleccionada = null;
+    mostrarPregunta();
 }
 
 // Mostrar una pregunta al cargar la página
-window.onload = mostrarPreguntaAleatoria;
+window.onload = mostrarPregunta;
 
 // Asociar la función al evento submit del formulario
 formulario.addEventListener('submit', verificarRespuesta);

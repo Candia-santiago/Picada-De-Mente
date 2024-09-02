@@ -333,7 +333,7 @@ const preguntas = [
     pregunta: "¿A qué profesor se le filtró un video explícito, de él siendo juguetón con sí mismo?",
     opciones: [
       "Alan Uzal",
-      "José Pérez",
+      "Dj Pekke",
       "Luis Martínez",
       "Carlos Gómez"
     ],
