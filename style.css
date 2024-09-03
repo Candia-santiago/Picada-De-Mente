@@ -98,7 +98,7 @@ button {
     bottom: 0;
     border-radius: 5px;
     z-index: 0;
-    object-fit: cover; /* Asegura que la imagen cubra el área sin distorsionarse */
+    object-fit: cover; 
 }
 
 .auto {
@@ -113,4 +113,27 @@ button {
 .container{
     justify-content: center;
     text-align: center;
+}
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000; 
+}
+
+#message {
+    color: white;
+    font-size: 3em;
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+.hidden {
+    display: none; 
 }

@@ -91,6 +91,7 @@ function resetGame() {
     respuestasCorrectas = [0, 0];
     preguntas = [...preguntasOriginales]; // Restaura las preguntas originales
     preguntaSeleccionada = null;
+    formulario.clear();
     mostrarPregunta();
 }
 

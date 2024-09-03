@@ -338,6 +338,322 @@ const preguntas = [
       "Carlos Gómez"
     ],
     respuesta: "Alan Uzal"
+  },
+  {
+    pregunta: "¿Cuál es el elemento químico con el símbolo 'O'?",
+    opciones: [
+      "Osmio",
+      "Oxígeno",
+      "Oro",
+      "Ombrelón"
+    ],
+    respuesta: "Oxígeno"
+  },
+  {
+    pregunta: "¿Cuál es el planeta más grande del sistema solar?",
+    opciones: [
+      "Júpiter",
+      "Saturno",
+      "Urano",
+      "Neptuno"
+    ],
+    respuesta: "Júpiter"
+  },
+  {
+    pregunta: "¿Qué tipo de célula es la unidad básica de la vida?",
+    opciones: [
+      "Animal",
+      "Vegetal",
+      "Procariota",
+      "Eucariota"
+    ],
+    respuesta: "Eucariota"
+  },
+  {
+    pregunta: "¿Cuál es el órgano más grande del cuerpo humano?",
+    opciones: [
+      "El corazón",
+      "El hígado",
+      "La piel",
+      "Los pulmones"
+    ],
+    respuesta: "La piel"
+  },
+  {
+    pregunta: "¿Qué científico formuló la teoría de la relatividad?",
+    opciones: [
+      "Isaac Newton",
+      "Albert Einstein",
+      "Niels Bohr",
+      "Galileo Galilei"
+    ],
+    respuesta: "Albert Einstein"
+  },
+  {
+    pregunta: "¿Cómo se llama la sustancia que da color a la piel?",
+    opciones: [
+      "Melanina",
+      "Hemoglobina",
+      "Colágeno",
+      "Queratina"
+    ],
+    respuesta: "Melanina"
+  },
+  {
+    pregunta: "¿Cuál es el órgano responsable de bombear la sangre en el cuerpo humano?",
+    opciones: [
+      "El hígado",
+      "El cerebro",
+      "El riñón",
+      "El corazón"
+    ],
+    respuesta: "El corazón"
+  },
+  {
+    pregunta: "¿Qué planeta es conocido como el 'planeta rojo'?",
+    opciones: [
+      "Marte",
+      "Venus",
+      "Mercurio",
+      "Saturno"
+    ],
+    respuesta: "Marte"
+  },
+  {
+    pregunta: "¿Qué es la fotosíntesis?",
+    opciones: [
+      "El proceso por el cual las plantas producen oxígeno",
+      "La formación de hielo en los océanos",
+      "La conversión de luz en energía por las plantas",
+      "El crecimiento de los tejidos animales"
+    ],
+    respuesta: "La conversión de luz en energía por las plantas"
+  },
+  {
+    pregunta: "¿Cuál es el compuesto químico de la sal de mesa?",
+    opciones: [
+      "NaCl",
+      "KCl",
+      "CaCl2",
+      "MgSO4"
+    ],
+    respuesta: "NaCl"
+  },
+
+  // Literatura
+  {
+    pregunta: "¿Quién escribió 'Don Quijote de la Mancha'?",
+    opciones: [
+      "Miguel de Cervantes",
+      "Gabriel García Márquez",
+      "William Shakespeare",
+      "Jorge Luis Borges"
+    ],
+    respuesta: "Miguel de Cervantes"
+  },
+  {
+    pregunta: "¿Cuál es la obra más famosa de J.K. Rowling?",
+    opciones: [
+      "Harry Potter y la Piedra Filosofal",
+      "El Hobbit",
+      "Cumbres Borrascosas",
+      "1984"
+    ],
+    respuesta: "Harry Potter y la Piedra Filosofal"
+  },
+  {
+    pregunta: "¿En qué libro aparece el personaje de Sherlock Holmes?",
+    opciones: [
+      "El nombre de la rosa",
+      "El caso de los tres estudiantes",
+      "El retrato de Dorian Gray",
+      "Los crímenes de la calle Morgue"
+    ],
+    respuesta: "El caso de los tres estudiantes"
+  },
+  {
+    pregunta: "¿Cuál es el autor de 'Cien años de soledad'?",
+    opciones: [
+      "Gabriel García Márquez",
+      "Mario Vargas Llosa",
+      "Carlos Fuentes",
+      "Julio Cortázar"
+    ],
+    respuesta: "Gabriel García Márquez"
+  },
+  {
+    pregunta: "¿Qué escritor es conocido por sus novelas de misterio y suspenso?",
+    opciones: [
+      "Agatha Christie",
+      "Jane Austen",
+      "Ernest Hemingway",
+      "Leo Tolstoy"
+    ],
+    respuesta: "Agatha Christie"
+  },
+  {
+    pregunta: "¿Cuál es el nombre del protagonista en 'Matar a un ruiseñor'?",
+    opciones: [
+      "Scout Finch",
+      "Atticus Finch",
+      "Jem Finch",
+      "Tom Robinson"
+    ],
+    respuesta: "Scout Finch"
+  },
+  {
+    pregunta: "¿Qué novela es famosa por su crítica a la sociedad del siglo XIX en Inglaterra?",
+    opciones: [
+      "Orgullo y prejuicio",
+      "Crimen y castigo",
+      "Los miserables",
+      "La casa de los espíritus"
+    ],
+    respuesta: "Orgullo y prejuicio"
+  },
+  {
+    pregunta: "¿Qué obra literaria es conocida por su construcción de mundos ficticios y mitología?",
+    opciones: [
+      "El señor de los anillos",
+      "1984",
+      "La metamorfosis",
+      "El gran Gatsby"
+    ],
+    respuesta: "El señor de los anillos"
+  },
+  {
+    pregunta: "¿Qué libro es el primero de la serie de 'Canción de hielo y fuego'?",
+    opciones: [
+      "Juego de Tronos",
+      "Choque de Reyes",
+      "Tormenta de Espadas",
+      "Festín de Cuervos"
+    ],
+    respuesta: "Juego de Tronos"
+  },
+  {
+    pregunta: "¿Quién escribió '1984'?",
+    opciones: [
+      "George Orwell",
+      "Aldous Huxley",
+      "Ray Bradbury",
+      "H.G. Wells"
+    ],
+    respuesta: "George Orwell"
+  },
+
+  // Cine
+  {
+    pregunta: "¿Quién dirigió la película 'Titanic'?",
+    opciones: [
+      "Steven Spielberg",
+      "James Cameron",
+      "Martin Scorsese",
+      "Christopher Nolan"
+    ],
+    respuesta: "James Cameron"
+  },
+  {
+    pregunta: "¿En qué película se puede escuchar la famosa frase 'Que la fuerza te acompañe'?",
+    opciones: [
+      "Star Wars",
+      "Star Trek",
+      "Blade Runner",
+      "Matrix"
+    ],
+    respuesta: "Star Wars"
+  },
+  {
+    pregunta: "¿Quién interpretó a Jack Sparrow en 'Piratas del Caribe'?",
+    opciones: [
+      "Johnny Depp",
+      "Orlando Bloom",
+      "Tom Cruise",
+      "Brad Pitt"
+    ],
+    respuesta: "Johnny Depp"
+  },
+  {
+    pregunta: "¿Cuál es la película ganadora del Oscar a la Mejor Película en 2022?",
+    opciones: [
+      "Nomadland",
+      "Parasite",
+      "Green Book",
+      "Everything Everywhere All at Once"
+    ],
+    respuesta: "Everything Everywhere All at Once"
+  },
+  {
+    pregunta: "¿Qué película animada ganó el Oscar a Mejor Película de Animación en 2016?",
+    opciones: [
+      "Frozen",
+      "Coco",
+      "Zootopia",
+      "Moana"
+    ],
+    respuesta: "Zootopia"
+  },
+  {
+    pregunta: "¿Cuál es el nombre del personaje interpretado por Keanu Reeves en la saga 'Matrix'?",
+    opciones: [
+      "Neo",
+      "Morpheus",
+      "Trinity",
+      "Smith"
+    ],
+    respuesta: "Neo"
+  },
+  {
+    pregunta: "¿Qué película de Alfred Hitchcock es famosa por su escena en la ducha?",
+    opciones: [
+      "Vértigo",
+      "Psicosis",
+      "Con la muerte en los talones",
+      "Rebecca"
+    ],
+    respuesta: "Psicosis"
+  },
+  {
+    pregunta: "¿Quién protagonizó la película 'El Padrino'?",
+    opciones: [
+      "Al Pacino",
+      "Robert De Niro",
+      "Marlon Brando",
+      "Jack Nicholson"
+    ],
+    respuesta: "Marlon Brando"
+  },
+  {
+    pregunta: "¿Qué director es conocido por su estilo único y por películas como 'Pulp Fiction' y 'Kill Bill'?",
+    opciones: [
+      "Quentin Tarantino",
+      "Martin Scorsese",
+      "Francis Ford Coppola",
+      "Woody Allen"
+    ],
+    respuesta: "Quentin Tarantino"
+  },
+  {
+    pregunta: "¿Cuál es la película de Pixar que trata sobre una familia de superhéroes?",
+    opciones: [
+      "Monsters, Inc.",
+      "Finding Nemo",
+      "The Incredibles",
+      "Ratatouille"
+    ],
+    respuesta: "The Incredibles"
+  },
+
+  // Música
+  {
+    pregunta: "¿Quién es conocido como el 'Rey del Pop'?",
+    opciones: [
+      "Elvis Presley",
+      "Michael Jackson",
+      "Prince",
+      "David Bowie"
+    ],
+    respuesta: "Michael Jackson"
   }
 ];
 
