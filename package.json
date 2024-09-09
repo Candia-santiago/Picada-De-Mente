@@ -1,0 +1,24 @@
+{
+  "name": "picada-de-mente",
+  "version": "1.0.0",
+  "description": "",
+  "main": "preguntas.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Candia-santiago/Picada-De-Mente.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Candia-santiago/Picada-De-Mente/issues"
+  },
+  "homepage": "https://github.com/Candia-santiago/Picada-De-Mente#readme",
+  "dependencies": {
+    "express": "^4.19.2",
+    "socket.io": "^4.7.5"
+  }
+}
