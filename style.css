@@ -137,3 +137,26 @@ button {
 .hidden {
     display: none; 
 }
+
+#cambiarPreguntaBtn {
+    color:black; 
+    background-color: rgb(223, 58, 58);
+    border-radius: 5px;
+    padding: 6.5px 20px; /* Agrega relleno para hacer el botón más grande */
+    font-size: 15px; /* Aumenta el tamaño de la fuente para mayor legibilidad */
+    margin-top: 1px; /* Espacio entre el botón y el resto del contenido */
+    cursor: pointer; /* Cambia el cursor al pasar por encima */
+}
+
+#eliminarOpcionesBtn.custom-green {
+    background-color: #28a745; /* Verde de Bootstrap */
+    border-color: #28a745; /* Borde verde de Bootstrap */
+    color: black; /* Texto blanco para contraste */
+    border-radius: 5px;
+    padding: 6.5px 20px; /* Agrega relleno para hacer el botón más grande */
+    font-size: 15px; /* Aumenta el tamaño de la fuente para mayor legibilidad */
+    margin-top: 1px; /* Espacio entre el botón y el resto del contenido */
+    cursor: pointer; /* Cambia el cursor al pasar por encima */
+}
+
+
