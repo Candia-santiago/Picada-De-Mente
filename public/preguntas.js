@@ -657,7 +657,16 @@ const preguntas = [
   }
 ];
 
-// Exportar el objeto para que pueda ser utilizado en otros archivos
-module.exports = preguntas;
+// // Función para obtener una pregunta aleatoria
+// function obtenerPreguntaAleatoria() {
+//   const indice = Math.floor(Math.random() * preguntas.length);
+//   return preguntas[indice];
+// }
 
-  
+// // Función para verificar la respuesta
+// function verificarRespuesta(respuesta, pregunta) {
+//   return pregunta.correcta === respuesta;
+// }
+
+// module.exports = { obtenerPreguntaAleatoria, verificarRespuesta };
+export default preguntas;
