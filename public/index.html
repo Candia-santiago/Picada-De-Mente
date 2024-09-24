@@ -13,11 +13,11 @@
     <div class="contenedor">
         <div class="pista">
             <div class="linea-media"></div>
-            <div class="carril">
-                <img src="img/autoRojo.png" alt="autoRojo" class="auto">
+            <div class="carril" id="jugador1">
+                <img src="img/autoRojo.png" alt="autoRojo" class="auto" style="transform: translateX(0px);">
             </div>
-            <div class="carril">
-                <img src="img/autoAzul.png" alt="autoAzul" class="auto">
+            <div class="carril" id="jugador2">
+                <img src="img/autoAzul.png" alt="autoAzul" class="auto" style="transform: translateX(0px);">
             </div>
             <div class="meta"><img id="meta" src="img/meta.jpg" alt="fotoDeMeta"></div>
         </div>
@@ -39,8 +39,8 @@
     </div>
     
     <script src="/socket.io/socket.io.js"></script> <!-- Incluir Socket.io -->
-    <script src="preguntas.js"></script>
-    <script src="script.js"></script>
+    <script src="./preguntas.js"></script>
+    <script src="./script.js"></script>
     
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
