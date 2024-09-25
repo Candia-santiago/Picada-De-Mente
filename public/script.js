@@ -5,7 +5,7 @@ const distanciaPorCasillero = 100; // Distancia en píxeles que representa un ca
 const jugadores = {};
 const maxJugadores = 2;
 
-io.on('connection', (socket) => {
+socket.on('connection', (socket) => {
     if (Object.keys(jugadores).length < maxJugadores) {
         const jugadorId = Object.keys(jugadores).length === 0 ? 'jugador1' : 'jugador2';
         jugadores[socket.id] = jugadorId;
@@ -39,7 +39,6 @@ socket.on('pregunta', (pregunta) => {
             <span class="form-check-label">${opcion}</span>
         `;
         opcionesDiv.appendChild(label);
-        console.log('Recibiendo pregunta:', pregunta);
     });
 });
 
@@ -76,11 +75,30 @@ socket.on('actualizarPosicion', ({ idJugador, posicion }) => {
     if (auto) {
         const nuevaPosicion = posicion * distanciaPorCasillero;
         console.log(`Moviendo el auto a ${nuevaPosicion}px`);
-        auto.style.transform = `translateX(${nuevaPosicion}px)`;
+        auto.style.transform = `translateX(${nuevaPosicion}px)`; // Mueve el auto en la pista
     }
 });
 
+// Lógica para manejar la respuesta y avanzar el auto
+document.getElementById('formularioRespuesta').addEventListener('submit', (event) => {
+    event.preventDefault();
+    const seleccion = document.querySelector('input[name="respuesta"]:checked');
+    const mensajeDiv = document.getElementById('mensajeResultado');
 
+    if (!seleccion) {
+        mensajeDiv.innerText = 'Debes seleccionar una respuesta!';
+        mensajeDiv.className = 'text-warning';
+        return;
+    }
+
+    const respuesta = {
+        pregunta: document.getElementById('contenedorPreguntas').innerText,
+        respuesta: seleccion.value
+    };
+
+    // Emitir respuesta al servidor
+    socket.emit('respuesta', respuesta);
+});
 
 
 

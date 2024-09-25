@@ -1,14 +1,15 @@
-import express from 'express';
-import http from 'http';
-import { Server } from 'socket.io';
-import preguntas from './public/preguntas.js';
+const express = require('express'); // Cambiado de import a require
+const http = require('http'); // Cambiado de import a require
+const { Server } = require('socket.io'); // Cambiado de import a require
+const preguntas = require('./public/preguntas.js'); // Cambiado de import a require
 
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
 const estadoJuego = {};
-const DISTANCIA_POR_RESPUESTA = 1; // Distancia que el auto avanza por cada respuesta correcta
+const DISTANCIA_POR_RESPUESTA = 1; 
+const DISTANCIA_TOTAL = 7;  // Distancia que el auto avanza por cada respuesta correcta
 const jugadores = {};
 const maxJugadores = 2;
 
@@ -35,28 +36,28 @@ io.on('connection', (socket) => {
         socket.disconnect();
     }
 
-    // Manejar respuesta del jugador
     socket.on('respuesta', (respuesta) => {
         const { correcta } = verificarRespuesta(respuesta);
+    
         if (correcta) {
             estadoJuego[socket.id].respuestasCorrectas++;
             estadoJuego[socket.id].posicion += DISTANCIA_POR_RESPUESTA;
-
+    
             // Emitir la nueva posición del jugador específico
             console.log(`Jugador ${socket.id} ha avanzado a la posición: ${estadoJuego[socket.id].posicion}`);
             io.emit('actualizarPosicion', { idJugador: jugadores[socket.id], posicion: estadoJuego[socket.id].posicion });
-
+    
             io.to(socket.id).emit('mensaje', { tipo: 'success', texto: '¡Respuesta correcta!' });
         } else {
             io.to(socket.id).emit('mensaje', { tipo: 'error', texto: 'Respuesta incorrecta!' });
         }
-
+    
         // Verificar si el jugador ha ganado
-        if (estadoJuego[socket.id].respuestasCorrectas >= 7) {
+        if (estadoJuego[socket.id].respuestasCorrectas >= DISTANCIA_TOTAL) {
             io.emit('ganador', { color: jugadores[socket.id], mensaje: `¡El jugador ${jugadores[socket.id]} ha ganado!` });
             return;
         }
-
+    
         // Enviar la siguiente pregunta
         enviarPregunta(socket);
     });
@@ -72,13 +73,12 @@ io.on('connection', (socket) => {
 // Enviar una pregunta al jugador
 const enviarPregunta = (socket) => {
     const preguntaIndex = Math.floor(Math.random() * preguntas.length);
-    const preguntaSeleccionada = preguntas[preguntaIndex];  // Aquí se define correctamente la pregunta seleccionada
-    
-    // Log para verificar que la pregunta se está enviando correctamente
+    const preguntaSeleccionada = preguntas[preguntaIndex]; 
+
     console.log(`Enviando pregunta a ${socket.id}:`, preguntaSeleccionada);
 
     // Emitir la pregunta seleccionada al jugador
-    io.to(socket.id).emit('pregunta', preguntas[preguntaIndex]);
+    io.to(socket.id).emit('pregunta', preguntaSeleccionada);
 };
 
 // Verificar si la respuesta es correcta

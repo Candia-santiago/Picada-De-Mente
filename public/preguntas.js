@@ -669,4 +669,4 @@ const preguntas = [
 // }
 
 // module.exports = { obtenerPreguntaAleatoria, verificarRespuesta };
-export default preguntas;
+module.exports = preguntas;

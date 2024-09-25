@@ -69,7 +69,7 @@ h1 {
     max-width: 60px;
     max-height: 100%;
     object-fit: contain;
-    transition: transform 0.5s ease;
+    
 }
 
 button {
