@@ -5,7 +5,7 @@ const distanciaPorCasillero = 100; // Distancia en píxeles que representa un ca
 const jugadores = {};
 const maxJugadores = 2;
 
-socket.on('connection', (socket) => {
+socket.onchat('connection', (socket) => {
     if (Object.keys(jugadores).length < maxJugadores) {
         const jugadorId = Object.keys(jugadores).length === 0 ? 'jugador1' : 'jugador2';
         jugadores[socket.id] = jugadorId;
