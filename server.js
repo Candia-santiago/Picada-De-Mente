@@ -7,9 +7,14 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
-const estadoJuego = {  respuestasCorrectas: 0,
+const estadoJuego = {  
+    respuestasCorrectas: 0,
     posicion: 0,
-    };
+    comodines: {
+        cambiarPregunta: true,
+        eliminarOpciones: true
+    }
+};
 const DISTANCIA_POR_RESPUESTA = 1; 
 const RESPUESTAS_A_GANAR = 14;  // Deben responder 7 preguntas correctas para ganar
 const jugadores = {};
@@ -42,6 +47,7 @@ io.on('connection', (socket) => {
         socket.disconnect();
     }
 
+    // Manejo de respuestas
     socket.on('respuesta', (respuesta) => {
         const { correcta } = verificarRespuesta(respuesta);
         
@@ -59,7 +65,6 @@ io.on('connection', (socket) => {
         // Verificar si el jugador ha ganado
         if (estadoJuego[socket.id].respuestasCorrectas >= RESPUESTAS_A_GANAR) {
             io.emit('ganador', { color: jugadores[socket.id], mensaje: `¡El jugador ${jugadores[socket.id]} ha ganado!` });
-            // Posicionar al jugador en la meta
             estadoJuego[socket.id].posicion = RESPUESTAS_A_GANAR; // Asignar la posición final
             io.emit('actualizarPosicion', { idJugador: jugadores[socket.id], posicion: estadoJuego[socket.id].posicion });
             return; // Terminar el juego
@@ -67,6 +72,22 @@ io.on('connection', (socket) => {
 
         // Enviar la siguiente pregunta
         enviarPregunta(socket);
+    });
+
+    // Manejo de los comodines
+    socket.on('usarComodin', ({ tipo }) => {
+        if (!estadoJuego[socket.id].comodines[tipo]) {
+            socket.emit('mensaje', { tipo: 'error', texto: 'Comodín ya utilizado.' });
+            return;
+        }
+
+        if (tipo === 'cambiarPregunta') {
+            estadoJuego[socket.id].comodines.cambiarPregunta = false;
+            enviarPregunta(socket); // Envía una nueva pregunta
+        } else if (tipo === 'eliminarOpciones') {
+            estadoJuego[socket.id].comodines.eliminarOpciones = false;
+            eliminarOpcionesIncorrectas(socket); // Elimina dos opciones incorrectas
+        }
     });
 
     // Limpiar cuando un jugador se desconecta
@@ -77,8 +98,6 @@ io.on('connection', (socket) => {
     });
 });
 
-
-
 // Enviar una pregunta al jugador
 const enviarPregunta = (socket) => {
     const preguntaIndex = Math.floor(Math.random() * preguntas.length);
@@ -88,12 +107,26 @@ const enviarPregunta = (socket) => {
 
     // Emitir la pregunta seleccionada al jugador
     io.to(socket.id).emit('pregunta', preguntaSeleccionada);
+
+    // Guardar la última pregunta enviada al jugador para futuros comodines
+    estadoJuego[socket.id].ultimaPregunta = preguntaSeleccionada.pregunta;
 };
 
 // Verificar si la respuesta es correcta
 const verificarRespuesta = (respuesta) => {
     const pregunta = preguntas.find(p => p.pregunta === respuesta.pregunta);
     return { correcta: pregunta && pregunta.respuesta === respuesta.respuesta };
+};
+
+// Función para eliminar opciones incorrectas
+const eliminarOpcionesIncorrectas = (socket) => {
+    const pregunta = preguntas.find(p => p.pregunta === estadoJuego[socket.id].ultimaPregunta);
+    if (pregunta) {
+        const opcionesFiltradas = pregunta.opciones.filter(opcion => opcion !== pregunta.respuesta);
+        const opcionesRestantes = [pregunta.respuesta, opcionesFiltradas[Math.floor(Math.random() * opcionesFiltradas.length)]];
+        const preguntaConOpcionesEliminadas = { ...pregunta, opciones: opcionesRestantes };
+        io.to(socket.id).emit('pregunta', preguntaConOpcionesEliminadas);
+    }
 };
 
 server.listen(3000, () => {

@@ -42,7 +42,6 @@ socket.on('pregunta', (pregunta) => {
     });
 });
 
-
 socket.on('mensaje', ({ tipo, texto }) => {
     const mensajeDiv = document.getElementById('mensajeResultado');
     mensajeDiv.innerText = texto;
@@ -79,27 +78,6 @@ socket.on('actualizarPosicion', ({ idJugador, posicion }) => {
     }
 });
 
-// Lógica para manejar la respuesta y avanzar el auto
-document.getElementById('formularioRespuesta').addEventListener('submit', (event) => {
-    event.preventDefault();
-    const seleccion = document.querySelector('input[name="respuesta"]:checked');
-    const mensajeDiv = document.getElementById('mensajeResultado');
-
-    if (!seleccion) {
-        mensajeDiv.innerText = 'Debes seleccionar una respuesta!';
-        mensajeDiv.className = 'text-warning';
-        return;
-    }
-
-    const respuesta = {
-        pregunta: document.getElementById('contenedorPreguntas').innerText,
-        respuesta: seleccion.value
-    };
-
-    // Emitir respuesta al servidor
-    socket.emit('respuesta', respuesta);
-});
-
 // Lógica para usar comodines
 document.getElementById('cambiarPreguntaBtn').addEventListener('click', () => {
     socket.emit('usarComodin', { tipo: 'cambiarPregunta' });
@@ -109,7 +87,17 @@ document.getElementById('eliminarOpcionesBtn').addEventListener('click', () => {
     socket.emit('usarComodin', { tipo: 'eliminarOpciones' });
 });
 
-
 socket.on('ganador', ({ color, mensaje }) => {
     alert(mensaje);
+});
+
+// Deshabilitar botones de comodines
+socket.on('mensaje', (data) => {
+    if (data.texto.includes('Comodín ya utilizado')) {
+        if (data.texto.includes('Cambiar Pregunta')) {
+            document.getElementById('cambiarPreguntaBtn').disabled = true;
+        } else if (data.texto.includes('Eliminar Opciones Incorrectas')) {
+            document.getElementById('eliminarOpcionesBtn').disabled = true;
+        }
+    }
 });
