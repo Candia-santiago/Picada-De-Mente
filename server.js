@@ -1,15 +1,17 @@
-const express = require('express'); // Cambiado de import a require
-const http = require('http'); // Cambiado de import a require
-const { Server } = require('socket.io'); // Cambiado de import a require
-const preguntas = require('./public/preguntas.js'); // Cambiado de import a require
+const express = require('express');
+const http = require('http');
+const { Server } = require('socket.io');
+const preguntas = require('./public/preguntas.js');
 
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
-const estadoJuego = {};
+const estadoJuego = {  respuestasCorrectas: 0,
+    posicion: 0,
+    };
 const DISTANCIA_POR_RESPUESTA = 1; 
-const DISTANCIA_TOTAL = 7;  // Distancia que el auto avanza por cada respuesta correcta
+const RESPUESTAS_A_GANAR = 14;  // Deben responder 7 preguntas correctas para ganar
 const jugadores = {};
 const maxJugadores = 2;
 
@@ -26,7 +28,11 @@ io.on('connection', (socket) => {
         // Inicializar estado del jugador
         estadoJuego[socket.id] = {
             respuestasCorrectas: 0,
-            posicion: 0
+            posicion: 0,
+            comodines: {
+                cambiarPregunta: true,
+                eliminarOpciones: true
+            }
         };
 
         // Enviar la primera pregunta al jugador
@@ -38,26 +44,27 @@ io.on('connection', (socket) => {
 
     socket.on('respuesta', (respuesta) => {
         const { correcta } = verificarRespuesta(respuesta);
-    
+        
         if (correcta) {
             estadoJuego[socket.id].respuestasCorrectas++;
             estadoJuego[socket.id].posicion += DISTANCIA_POR_RESPUESTA;
-    
-            // Emitir la nueva posición del jugador específico
-            console.log(`Jugador ${socket.id} ha avanzado a la posición: ${estadoJuego[socket.id].posicion}`);
+
+            console.log(`Jugador ${jugadores[socket.id]} ha avanzado a la posición: ${estadoJuego[socket.id].posicion}`);
             io.emit('actualizarPosicion', { idJugador: jugadores[socket.id], posicion: estadoJuego[socket.id].posicion });
-    
             io.to(socket.id).emit('mensaje', { tipo: 'success', texto: '¡Respuesta correcta!' });
         } else {
             io.to(socket.id).emit('mensaje', { tipo: 'error', texto: 'Respuesta incorrecta!' });
         }
-    
+
         // Verificar si el jugador ha ganado
-        if (estadoJuego[socket.id].respuestasCorrectas >= DISTANCIA_TOTAL) {
+        if (estadoJuego[socket.id].respuestasCorrectas >= RESPUESTAS_A_GANAR) {
             io.emit('ganador', { color: jugadores[socket.id], mensaje: `¡El jugador ${jugadores[socket.id]} ha ganado!` });
-            return;
+            // Posicionar al jugador en la meta
+            estadoJuego[socket.id].posicion = RESPUESTAS_A_GANAR; // Asignar la posición final
+            io.emit('actualizarPosicion', { idJugador: jugadores[socket.id], posicion: estadoJuego[socket.id].posicion });
+            return; // Terminar el juego
         }
-    
+
         // Enviar la siguiente pregunta
         enviarPregunta(socket);
     });
@@ -69,6 +76,8 @@ io.on('connection', (socket) => {
         delete jugadores[socket.id];
     });
 });
+
+
 
 // Enviar una pregunta al jugador
 const enviarPregunta = (socket) => {
@@ -84,7 +93,7 @@ const enviarPregunta = (socket) => {
 // Verificar si la respuesta es correcta
 const verificarRespuesta = (respuesta) => {
     const pregunta = preguntas.find(p => p.pregunta === respuesta.pregunta);
-    return { correcta: pregunta.respuesta === respuesta.respuesta };
+    return { correcta: pregunta && pregunta.respuesta === respuesta.respuesta };
 };
 
 server.listen(3000, () => {

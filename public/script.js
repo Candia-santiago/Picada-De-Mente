@@ -5,7 +5,7 @@ const distanciaPorCasillero = 100; // Distancia en píxeles que representa un ca
 const jugadores = {};
 const maxJugadores = 2;
 
-socket.onchat('connection', (socket) => {
+socket.on('connection', (socket) => {
     if (Object.keys(jugadores).length < maxJugadores) {
         const jugadorId = Object.keys(jugadores).length === 0 ? 'jugador1' : 'jugador2';
         jugadores[socket.id] = jugadorId;
@@ -100,6 +100,14 @@ document.getElementById('formularioRespuesta').addEventListener('submit', (event
     socket.emit('respuesta', respuesta);
 });
 
+// Lógica para usar comodines
+document.getElementById('cambiarPreguntaBtn').addEventListener('click', () => {
+    socket.emit('usarComodin', { tipo: 'cambiarPregunta' });
+});
+
+document.getElementById('eliminarOpcionesBtn').addEventListener('click', () => {
+    socket.emit('usarComodin', { tipo: 'eliminarOpciones' });
+});
 
 
 socket.on('ganador', ({ color, mensaje }) => {
