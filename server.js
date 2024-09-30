@@ -15,10 +15,13 @@ const estadoJuego = {
         eliminarOpciones: true
     }
 };
-const DISTANCIA_POR_RESPUESTA = 1; 
-const RESPUESTAS_A_GANAR = 14;  // Deben responder 7 preguntas correctas para ganar
+
+const DISTANCIA_POR_RESPUESTA = 1;
+const RESPUESTAS_A_GANAR = 10;
 const jugadores = {};
 const maxJugadores = 2;
+let jugadoresConectados = 0; // Contador de jugadores conectados
+let juegoEnCurso = false; // Variable para controlar si el juego está en curso
 
 app.use(express.static('public'));
 
@@ -26,6 +29,7 @@ io.on('connection', (socket) => {
     if (Object.keys(jugadores).length < maxJugadores) {
         const jugadorId = Object.keys(jugadores).length === 0 ? 'jugador1' : 'jugador2';
         jugadores[socket.id] = jugadorId;
+        jugadoresConectados++;  // Incrementamos cuando un jugador se conecta
 
         console.log(`Jugador conectado: ${socket.id} asignado a ${jugadorId}`);
         socket.emit('asignarId', { idJugador: jugadorId });
@@ -40,8 +44,20 @@ io.on('connection', (socket) => {
             }
         };
 
-        // Enviar la primera pregunta al jugador
-        enviarPregunta(socket);
+        // Verificar si ambos jugadores están conectados
+        if (jugadoresConectados === maxJugadores) {
+            // Avisar a todos los jugadores que el juego comienza
+            io.emit('mensaje', { tipo: 'info', texto: 'Ambos jugadores conectados. El juego comienza ahora!' });
+            juegoEnCurso = true; // Iniciar el juego
+            
+            // Enviar la primera pregunta a ambos jugadores
+            Object.keys(jugadores).forEach((socketId) => {
+                enviarPregunta(io.sockets.sockets.get(socketId));
+            });
+        } else {
+            // Avisar al jugador que está esperando al otro jugador
+            socket.emit('mensaje', { tipo: 'info', texto: 'Esperando al otro jugador...' });
+        }
     } else {
         socket.emit('mensaje', { tipo: 'error', texto: 'Juego lleno. Intenta más tarde.' });
         socket.disconnect();
@@ -49,8 +65,13 @@ io.on('connection', (socket) => {
 
     // Manejo de respuestas
     socket.on('respuesta', (respuesta) => {
+        if (!juegoEnCurso) {
+            socket.emit('mensaje', { tipo: 'error', texto: 'El juego ha terminado. No puedes continuar jugando.' });
+            return; // No se permite responder si el juego ha terminado
+        }
+
         const { correcta } = verificarRespuesta(respuesta);
-        
+
         if (correcta) {
             estadoJuego[socket.id].respuestasCorrectas++;
             estadoJuego[socket.id].posicion += DISTANCIA_POR_RESPUESTA;
@@ -67,6 +88,7 @@ io.on('connection', (socket) => {
             io.emit('ganador', { color: jugadores[socket.id], mensaje: `¡El jugador ${jugadores[socket.id]} ha ganado!` });
             estadoJuego[socket.id].posicion = RESPUESTAS_A_GANAR; // Asignar la posición final
             io.emit('actualizarPosicion', { idJugador: jugadores[socket.id], posicion: estadoJuego[socket.id].posicion });
+            juegoEnCurso = false; // Terminar el juego
             return; // Terminar el juego
         }
 
@@ -76,6 +98,11 @@ io.on('connection', (socket) => {
 
     // Manejo de los comodines
     socket.on('usarComodin', ({ tipo }) => {
+        if (!juegoEnCurso) {
+            socket.emit('mensaje', { tipo: 'error', texto: 'El juego ha terminado. No puedes usar comodines.' });
+            return; // No se permite usar comodines si el juego ha terminado
+        }
+
         if (!estadoJuego[socket.id].comodines[tipo]) {
             socket.emit('mensaje', { tipo: 'error', texto: 'Comodín ya utilizado.' });
             return;
@@ -95,6 +122,7 @@ io.on('connection', (socket) => {
         console.log(`Jugador desconectado: ${socket.id}`);
         delete estadoJuego[socket.id];
         delete jugadores[socket.id];
+        jugadoresConectados--;  // Decrementamos cuando un jugador se desconecta
     });
 });
 
