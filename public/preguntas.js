@@ -657,16 +657,15 @@ const preguntas = [
   }
 ];
 
-// // Función para obtener una pregunta aleatoria
-// function obtenerPreguntaAleatoria() {
-//   const indice = Math.floor(Math.random() * preguntas.length);
-//   return preguntas[indice];
-// }
+function mezclarOpciones(opciones) {
+  for (let i = opciones.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [opciones[i], opciones[j]] = [opciones[j], opciones[i]]; // Intercambia las opciones
+  }
+  return opciones;
+}
 
-// // Función para verificar la respuesta
-// function verificarRespuesta(respuesta, pregunta) {
-//   return pregunta.correcta === respuesta;
-// }
-
-// module.exports = { obtenerPreguntaAleatoria, verificarRespuesta };
-module.exports = preguntas;
+module.exports = preguntas.map(pregunta => ({
+  ...pregunta,
+  opciones: mezclarOpciones([...pregunta.opciones]) // Mezcla las opciones antes de exportar
+}));

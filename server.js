@@ -20,8 +20,8 @@ const DISTANCIA_POR_RESPUESTA = 1;
 const RESPUESTAS_A_GANAR = 10;
 const jugadores = {};
 const maxJugadores = 2;
-let jugadoresConectados = 0; // Contador de jugadores conectados
-let juegoEnCurso = false; // Variable para controlar si el juego está en curso
+let jugadoresConectados = 0;
+let juegoEnCurso = false;
 
 app.use(express.static('public'));
 
@@ -29,7 +29,7 @@ io.on('connection', (socket) => {
     if (Object.keys(jugadores).length < maxJugadores) {
         const jugadorId = Object.keys(jugadores).length === 0 ? 'jugador1' : 'jugador2';
         jugadores[socket.id] = jugadorId;
-        jugadoresConectados++;  // Incrementamos cuando un jugador se conecta
+        jugadoresConectados++;
 
         console.log(`Jugador conectado: ${socket.id} asignado a ${jugadorId}`);
         socket.emit('asignarId', { idJugador: jugadorId });
@@ -41,21 +41,21 @@ io.on('connection', (socket) => {
             comodines: {
                 cambiarPregunta: true,
                 eliminarOpciones: true
-            }
+            },
+            preguntasDisponibles: [...preguntas], // Clonamos las preguntas para este jugador
+            ultimaPregunta: null
         };
 
         // Verificar si ambos jugadores están conectados
         if (jugadoresConectados === maxJugadores) {
-            // Avisar a todos los jugadores que el juego comienza
             io.emit('mensaje', { tipo: 'info', texto: 'Ambos jugadores conectados. El juego comienza ahora!' });
-            juegoEnCurso = true; // Iniciar el juego
+            juegoEnCurso = true;
             
             // Enviar la primera pregunta a ambos jugadores
             Object.keys(jugadores).forEach((socketId) => {
                 enviarPregunta(io.sockets.sockets.get(socketId));
             });
         } else {
-            // Avisar al jugador que está esperando al otro jugador
             socket.emit('mensaje', { tipo: 'info', texto: 'Esperando al otro jugador...' });
         }
     } else {
@@ -67,10 +67,10 @@ io.on('connection', (socket) => {
     socket.on('respuesta', (respuesta) => {
         if (!juegoEnCurso) {
             socket.emit('mensaje', { tipo: 'error', texto: 'El juego ha terminado. No puedes continuar jugando.' });
-            return; // No se permite responder si el juego ha terminado
+            return;
         }
 
-        const { correcta } = verificarRespuesta(respuesta);
+        const { correcta } = verificarRespuesta(respuesta, socket.id);
 
         if (correcta) {
             estadoJuego[socket.id].respuestasCorrectas++;
@@ -83,24 +83,21 @@ io.on('connection', (socket) => {
             io.to(socket.id).emit('mensaje', { tipo: 'error', texto: 'Respuesta incorrecta!' });
         }
 
-        // Verificar si el jugador ha ganado
         if (estadoJuego[socket.id].respuestasCorrectas >= RESPUESTAS_A_GANAR) {
             io.emit('ganador', { color: jugadores[socket.id], mensaje: `¡El jugador ${jugadores[socket.id]} ha ganado!` });
-            estadoJuego[socket.id].posicion = RESPUESTAS_A_GANAR; // Asignar la posición final
+            estadoJuego[socket.id].posicion = RESPUESTAS_A_GANAR;
             io.emit('actualizarPosicion', { idJugador: jugadores[socket.id], posicion: estadoJuego[socket.id].posicion });
-            juegoEnCurso = false; // Terminar el juego
-            return; // Terminar el juego
+            juegoEnCurso = false;
+            return;
         }
 
-        // Enviar la siguiente pregunta
         enviarPregunta(socket);
     });
 
-    // Manejo de los comodines
     socket.on('usarComodin', ({ tipo }) => {
         if (!juegoEnCurso) {
             socket.emit('mensaje', { tipo: 'error', texto: 'El juego ha terminado. No puedes usar comodines.' });
-            return; // No se permite usar comodines si el juego ha terminado
+            return;
         }
 
         if (!estadoJuego[socket.id].comodines[tipo]) {
@@ -110,45 +107,63 @@ io.on('connection', (socket) => {
 
         if (tipo === 'cambiarPregunta') {
             estadoJuego[socket.id].comodines.cambiarPregunta = false;
-            enviarPregunta(socket); // Envía una nueva pregunta
+            enviarPregunta(socket);
         } else if (tipo === 'eliminarOpciones') {
             estadoJuego[socket.id].comodines.eliminarOpciones = false;
-            eliminarOpcionesIncorrectas(socket); // Elimina dos opciones incorrectas
+            eliminarOpcionesIncorrectas(socket);
         }
     });
 
-    // Limpiar cuando un jugador se desconecta
     socket.on('disconnect', () => {
         console.log(`Jugador desconectado: ${socket.id}`);
         delete estadoJuego[socket.id];
         delete jugadores[socket.id];
-        jugadoresConectados--;  // Decrementamos cuando un jugador se desconecta
+        jugadoresConectados--;
     });
 });
 
 // Enviar una pregunta al jugador
 const enviarPregunta = (socket) => {
-    const preguntaIndex = Math.floor(Math.random() * preguntas.length);
-    const preguntaSeleccionada = preguntas[preguntaIndex]; 
+    const jugadorEstado = estadoJuego[socket.id];
+
+    if (jugadorEstado.preguntasDisponibles.length === 0) {
+        socket.emit('mensaje', { tipo: 'info', texto: 'No quedan más preguntas disponibles.' });
+        return;
+    }
+
+    // Selecciona una pregunta aleatoria y la elimina de la lista de preguntas disponibles
+    const preguntaIndex = Math.floor(Math.random() * jugadorEstado.preguntasDisponibles.length);
+    const preguntaSeleccionada = jugadorEstado.preguntasDisponibles.splice(preguntaIndex, 1)[0];
 
     console.log(`Enviando pregunta a ${socket.id}:`, preguntaSeleccionada);
 
-    // Emitir la pregunta seleccionada al jugador
-    io.to(socket.id).emit('pregunta', preguntaSeleccionada);
+    // Guardar la pregunta seleccionada para verificar la respuesta
+    jugadorEstado.ultimaPregunta = preguntaSeleccionada.pregunta;
 
-    // Guardar la última pregunta enviada al jugador para futuros comodines
-    estadoJuego[socket.id].ultimaPregunta = preguntaSeleccionada.pregunta;
+    io.to(socket.id).emit('pregunta', preguntaSeleccionada);
 };
 
 // Verificar si la respuesta es correcta
-const verificarRespuesta = (respuesta) => {
-    const pregunta = preguntas.find(p => p.pregunta === respuesta.pregunta);
-    return { correcta: pregunta && pregunta.respuesta === respuesta.respuesta };
+const verificarRespuesta = (respuesta, socketId) => {
+    const jugadorEstado = estadoJuego[socketId];
+    
+    // Obtener la última pregunta enviada al jugador
+    const ultimaPregunta = jugadorEstado.ultimaPregunta;
+    
+    // Buscar la pregunta original en el arreglo de preguntas usando la última pregunta enviada
+    const preguntaOriginal = preguntas.find(p => p.pregunta === ultimaPregunta);
+
+    // Verificar si la respuesta enviada coincide con la respuesta correcta de la pregunta original
+    const correcta = preguntaOriginal && preguntaOriginal.respuesta === respuesta.respuesta;
+    
+    return { correcta };
 };
 
 // Función para eliminar opciones incorrectas
 const eliminarOpcionesIncorrectas = (socket) => {
-    const pregunta = preguntas.find(p => p.pregunta === estadoJuego[socket.id].ultimaPregunta);
+    const jugadorEstado = estadoJuego[socket.id];
+    const pregunta = preguntas.find(p => p.pregunta === jugadorEstado.ultimaPregunta);
+    
     if (pregunta) {
         const opcionesFiltradas = pregunta.opciones.filter(opcion => opcion !== pregunta.respuesta);
         const opcionesRestantes = [pregunta.respuesta, opcionesFiltradas[Math.floor(Math.random() * opcionesFiltradas.length)]];
