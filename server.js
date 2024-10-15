@@ -84,9 +84,24 @@ io.on('connection', (socket) => {
         }
 
         if (estadoJuego[socket.id].respuestasCorrectas >= RESPUESTAS_A_GANAR) {
-            io.emit('ganador', { color: jugadores[socket.id], mensaje: `¡El jugador ${jugadores[socket.id]} ha ganado!` });
+            // Emitir mensaje al jugador ganador
+            io.to(socket.id).emit('ganador', {
+                color: jugadores[socket.id], 
+                mensaje: '¡Felicidades! Has ganado la partida.'
+            });
+
+            // Emitir mensaje al jugador perdedor
+            const perdedorId = Object.keys(jugadores).find(id => id !== socket.id);
+            if (perdedorId) {
+                io.to(perdedorId).emit('ganador', {
+                    color: jugadores[perdedorId], 
+                    mensaje: 'Lo siento, has perdido la partida.'
+                });
+            }
+
             estadoJuego[socket.id].posicion = RESPUESTAS_A_GANAR;
             io.emit('actualizarPosicion', { idJugador: jugadores[socket.id], posicion: estadoJuego[socket.id].posicion });
+            
             juegoEnCurso = false;
             return;
         }

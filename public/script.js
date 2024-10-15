@@ -88,7 +88,17 @@ document.getElementById('eliminarOpcionesBtn').addEventListener('click', () => {
 });
 
 socket.on('ganador', ({ color, mensaje }) => {
-    alert(mensaje);
+    // Mostrar el mensaje de ganador
+    const mensajeFinal = document.getElementById('mensaje-final');
+    const mensajeTexto = document.getElementById('mensaje-texto');
+
+    mensajeTexto.innerText = mensaje; // Mostrar mensaje recibido del servidor
+    mensajeFinal.classList.add('visible'); // Mostrar pantalla difuminada
+
+    setTimeout(() => {
+        // Opcional: Recargar la página después de 5 segundos
+        location.reload();
+    }, 5000);
 });
 
 // Deshabilitar botones de comodines
