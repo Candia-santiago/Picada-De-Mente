@@ -1,9 +1,31 @@
 const socket = io();
 const distanciaTotal = 7; // Número total de respuestas correctas necesarias para ganar
 const distanciaPorCasillero = 100; // Distancia en píxeles que representa un casillero
-
 const jugadores = {};
 const maxJugadores = 2;
+// Chat entre jugadores
+const formChat = document.getElementById('form-chat');
+const inputChat = document.getElementById('input-chat');
+const chatMensajes = document.getElementById('chat-mensajes');
+
+// Cuando el formulario del chat se envía
+formChat.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (inputChat.value) {
+        // Enviar mensaje de chat al servidor
+        socket.emit('mensajeChat', inputChat.value);
+        inputChat.value = '';
+    }
+});
+
+
+// Escuchar los mensajes del chat y mostrarlos en la interfaz
+socket.on('mensajeChat', (msg) => {
+    const mensajeElement = document.createElement('div');
+    mensajeElement.textContent = msg;
+    chatMensajes.appendChild(mensajeElement);
+    chatMensajes.scrollTop = chatMensajes.scrollHeight; // Desplazar el scroll al final
+});
 
 socket.on('connection', (socket) => {
     if (Object.keys(jugadores).length < maxJugadores) {
