@@ -201,3 +201,17 @@ button {
     color: black;
 }
 
+.btn-verde {
+    background-color: #28a745; /* Verde */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 5px;
+}
+
+.btn-verde:hover {
+    background-color: #218838; /* Un tono más oscuro de verde al pasar el cursor */
+}

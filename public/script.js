@@ -20,12 +20,27 @@ formChat.addEventListener('submit', (e) => {
 
 
 // Escuchar los mensajes del chat y mostrarlos en la interfaz
+// Escuchar los mensajes del chat y mostrarlos en la interfaz
 socket.on('mensajeChat', (msg) => {
     const mensajeElement = document.createElement('div');
     mensajeElement.textContent = msg;
-    chatMensajes.appendChild(mensajeElement);
-    chatMensajes.scrollTop = chatMensajes.scrollHeight; // Desplazar el scroll al final
+    document.getElementById('chat-mensajes').appendChild(mensajeElement);
+    document.getElementById('chat-mensajes').scrollTop = document.getElementById('chat-mensajes').scrollHeight;
 });
+
+// Capturar clicks en los botones de mensajes predeterminados
+document.getElementById('btn-chupa-pija').addEventListener('click', () => {
+    socket.emit('mensajeChat', 'chupa pija');
+});
+
+document.getElementById('btn-come-pija').addEventListener('click', () => {
+    socket.emit('mensajeChat', 'come pija');
+});
+
+document.getElementById('btn-te-coji').addEventListener('click', () => {
+    socket.emit('mensajeChat', 'te coji');
+});
+
 
 socket.on('connection', (socket) => {
     if (Object.keys(jugadores).length < maxJugadores) {

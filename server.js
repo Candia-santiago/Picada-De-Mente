@@ -190,11 +190,13 @@ io.on('connection', (socket) => {
     // Lógica existente del juego
 
     // Recibir mensajes de chat y reenviarlos a todos los jugadores
-    socket.on('mensajeChat', (msg) => {
-        const jugador = jugadores[socket.id] || 'Jugador desconocido'; // Identificamos al jugador
-        const mensajeCompleto = `${jugador}: ${msg}`;
-        io.emit('mensajeChat', mensajeCompleto); // Enviar a ambos jugadores
-    });
+// Escuchar mensajes de chat y retransmitirlos
+socket.on('mensajeChat', (msg) => {
+    const jugador = jugadores[socket.id] || 'Jugador desconocido'; // Identificamos al jugador
+    const mensajeCompleto = `${jugador}: ${msg}`;
+    io.emit('mensajeChat', mensajeCompleto); // Enviar a ambos jugadores
+});
+
 
     socket.on('disconnect', () => {
         // Lógica existente de desconexión
