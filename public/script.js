@@ -27,6 +27,22 @@ socket.on('mensajeChat', (msg) => {
     document.getElementById('chat-mensajes').appendChild(mensajeElement);
     document.getElementById('chat-mensajes').scrollTop = document.getElementById('chat-mensajes').scrollHeight;
 });
+// Manejar el botón de mostrar/ocultar chat
+document.getElementById('toggle-chat').addEventListener('click', () => {
+    const chatMensajes = document.getElementById('chat-mensajes');
+    const formChat = document.getElementById('form-chat');
+
+    if (chatMensajes.style.display === 'none') {
+        chatMensajes.style.display = 'block';
+        formChat.style.display = 'block';
+        document.getElementById('toggle-chat').innerText = 'Ocultar Chat';
+    } else {
+        chatMensajes.style.display = 'none';
+        formChat.style.display = 'none';
+        document.getElementById('toggle-chat').innerText = 'Mostrar Chat';
+    }
+});
+
 
 // Capturar clicks en los botones de mensajes predeterminados
 document.getElementById('btn-chupa-pija').addEventListener('click', () => {

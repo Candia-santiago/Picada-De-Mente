@@ -9,8 +9,13 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <h1 class="text-center my-4">Picada de Mente</h1>
-    <div class="contenedor">
+    <div class="pagina">
+
+  
+        <div class="contenedor">
+        <h1 class="text-center my-4">Picada de Mente</h1>
+
+        
         <div class="pista">
             <div class="linea-media"></div>
             <div class="carril" id="jugador1">
@@ -22,24 +27,14 @@
             <div class="meta"><img id="meta" src="img/meta.jpg" alt="fotoDeMeta"></div>
         </div>
     </div>
-    <br>
+
     
     <div class="preguntas-container">
         <h2>Pregunta</h2>
         <div id="contenedorPreguntas" class="mb-4"></div>
     </div>
-    <div class="chat-container">
-        <h2>Chat</h2>
-        <div id="chat-mensajes" class="chat-mensajes"></div>
-        <form id="form-chat">
-            <input id="input-chat" autocomplete="off" placeholder="Escribe un mensaje..." />
-            <button type="submit" class="btn btn-primary">Enviar</button>
-        </form> 
-        <br>
-        <button id="btn-chupa-pija" class="btn btn-verde">chupa pija</button>
-        <button id="btn-come-pija" class="btn btn-verde">come pija</button>
-        <button id="btn-te-coji" class="btn btn-verde">te gane</button>
-    </div>
+ 
+    
     <div class="container">
         <h2>Seleccione su respuesta</h2>
         <form id="formularioRespuesta">
@@ -53,7 +48,19 @@
     <div id="mensaje-final" class="mensaje-final oculto">
         <div id="mensaje-texto" class="mensaje-texto"></div>
     </div>
-    
+    <div class="chat-container">
+        <h2>Chat <button id="toggle-chat" class="btn btn-info">Mostrar/Ocultar</button></h2>
+        <div id="chat-mensajes" class="chat-mensajes" style="display: none;"></div>
+        <form id="form-chat" style="display: none;">
+            <input id="input-chat" autocomplete="off" placeholder="Escribe un mensaje..." />
+            <button type="submit" class="btn btn-primary">Enviar</button>
+        </form>
+        <br>
+        <button id="btn-chupa-pija" class="btn btn-verde">chupa pija</button>
+        <button id="btn-come-pija" class="btn btn-verde">come pija</button>
+        <button id="btn-te-coji" class="btn btn-verde">te gane</button>
+    </div>
+</div>
     <script src="/socket.io/socket.io.js"></script> <!-- Incluir Socket.io -->
     <script src="./preguntas.js"></script>
     <script src="./script.js"></script>
